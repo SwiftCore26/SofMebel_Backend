@@ -1,4 +1,5 @@
 from django.db.models import Model, CharField, ForeignKey, CASCADE, TextField, DecimalField, ImageField
+from django.db.models.fields import FloatField
 
 from apps.models.base import SlugBaseModel
 
@@ -15,6 +16,7 @@ class Product(SlugBaseModel):
     description = TextField()
     price = DecimalField(max_digits=10, decimal_places=2)
     category = ForeignKey('apps.Category', CASCADE, related_name='products')
+    rating = FloatField(default=0)
 
     def __str__(self):
         return f'{self.name}'

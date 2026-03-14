@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-from root.drf_settings import *
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,8 +19,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # TODO my package
     'apps.apps.AppsConfig',
+
     # TODO third party package
     'rest_framework',
     'drf_spectacular'
