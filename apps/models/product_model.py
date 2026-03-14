@@ -20,7 +20,7 @@ class Product(Model):
 
 
 class ProductImage(Model):
-    product = ForeignKey(Product, CASCADE, related_name='images')
+    product = ForeignKey('apps.Product', CASCADE, related_name='images')
     image = ImageField(upload_to='products/')
 
     def __str__(self):
