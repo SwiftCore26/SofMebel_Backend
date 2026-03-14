@@ -17,7 +17,7 @@ pip install uv
 # pyproject.toml dagi barcha kutubxonalarni o‘rnatish
 uv sync
 
-# pyproject.toml ga o‘rnatilgan kutubxonani qoshish
+# kutubhona o'rnatish
 uv add (kutubxona nomi)
 ```
 

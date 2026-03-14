@@ -1,16 +1,17 @@
 from django.db.models import Model, CharField, ForeignKey, CASCADE, TextField, DecimalField, ImageField
 
+from apps.models.base import SlugBaseModel
 
-class Category(Model):
-    name = CharField(max_length=100)
+
+class Category(SlugBaseModel):
+    name = CharField(max_length=255)
 
     def __str__(self):
         return f'{self.name}'
 
 
-
-class Product(Model):
-    name = CharField(max_length=100)
+class Product(SlugBaseModel):
+    name = CharField(max_length=255)
     description = TextField()
     price = DecimalField(max_digits=10, decimal_places=2)
     category = ForeignKey('apps.Category', CASCADE, related_name='products')
