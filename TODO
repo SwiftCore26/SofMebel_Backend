@@ -1,12 +1,11 @@
 https://sof-mebel-six.vercel.app/
 
 TODO in process
-Product filter -> Max_Price, Min_Price, Category, product_name
 Pagination
 
 Order Model -> Full(Cart, Order, Cart Item)
 
-unfold.admin mana shuni korish kerak jazzmin orniga :)
+unfold.admin mana shuni korish kerak jazzmin orniga :(
 
 
 
@@ -17,3 +16,4 @@ Jazzmin ✅
 Jazzmin (Parse admin panel) ✅
 
 Stars qoshish kere product ga
+Product filter -> Max_Price, Min_Price, Category, product_name
