@@ -7,6 +7,8 @@ from apps.models import ProductImage, Product, Category
 class ProductImageInline(TabularInline):
     model = ProductImage
     extra = 3
+    min_num = 1
+    validate_min = True
 
 
 @admin.register(Product)
