@@ -15,3 +15,9 @@ class CategoryDetailSerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'products']
+
+
+class CategoryModelSerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
