@@ -1,10 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from apps.filters import ProductFilter
 from apps.models import Product, Category
-from apps.serializers.product import ProductModelSerializer, CategoryModelSerializer
+from apps.serializers.product import ProductModelSerializer, CategoryDetailSerializer
 
 
 @extend_schema(
@@ -23,6 +23,7 @@ class ProductListAPIView(ListAPIView):
     filterset_class = ProductFilter
 
 
-class CategoryListView(ListAPIView):
-    serializer_class = CategoryModelSerializer
+class CategoryDetailAPIView(RetrieveAPIView):
+    serializer_class = CategoryDetailSerializer
     queryset = Category.objects.all()
+    lookup_field = 'slug'
