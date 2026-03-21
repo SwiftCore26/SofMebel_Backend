@@ -1,12 +1,18 @@
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from apps.models import Product, Category
 
 
 class ProductModelSerializer(ModelSerializer):
+    images = SerializerMethodField()
+
     class Meta:
         model = Product
         fields = '__all__'
+
+    def get_images(self, obj):
+        return [img.image.url for img in obj.images.all()]
 
 
 class CategoryDetailSerializer(ModelSerializer):
