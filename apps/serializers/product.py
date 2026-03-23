@@ -28,10 +28,3 @@ class CategoryModelSerializer(ModelSerializer):
         model = Category
         fields = '__all__'
 
-
-class ContactSerializer(Serializer):
-    name = CharField()
-    surname = CharField()
-    email = EmailField()
-    phone = CharField()
-    message = CharField()

@@ -10,7 +10,7 @@ from apps.filters import ProductFilter
 from apps.models import Product, Category
 from apps.pagination import CustomPagination
 from apps.serializers import ProductModelSerializer, CategoryDetailSerializer, CategoryModelSerializer
-from apps.serializers.product import ContactSerializer
+
 from root import settings
 
 

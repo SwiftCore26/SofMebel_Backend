@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import TabularInline, ModelAdmin
 
-from apps.models import ProductImage, Product, Category
+from apps.models import ProductImage, Product, Category, Contact, TelegramGroup
 
 
 class ProductImageInline(TabularInline):
@@ -29,3 +29,17 @@ class CategoryAdmin(ModelAdmin):
     ordering = ('id',)
     readonly_fields = ('id', 'slug',)
     list_display_links = ('id', 'name')
+
+
+@admin.register(Contact)
+class ContactAdmin(ModelAdmin):
+    list_display = ('name', 'surname', 'email', 'created_at')
+    search_fields = ('name', 'email', 'surname')
+    ordering = ('id',)
+
+@admin.register(TelegramGroup)
+class TelegramGroupAdmin(ModelAdmin):
+    list_display = ('group_name', 'group_id')
+    ordering = ('id',)
+
+

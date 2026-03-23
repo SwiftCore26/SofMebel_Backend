@@ -1,2 +1,3 @@
 from apps.serializers.order import OrderCreateSerializer
 from apps.serializers.product import CategoryModelSerializer, ProductModelSerializer, CategoryDetailSerializer
+from apps.serializers.settings import ContactSerializer
