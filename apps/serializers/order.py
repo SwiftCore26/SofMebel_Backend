@@ -1,11 +1,13 @@
 from decimal import Decimal
 
+import requests
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import IntegerField, CharField
 from rest_framework.serializers import Serializer
 
 from apps.models import Product
 from apps.models.order import Order, OrderItem
+from root import settings
 
 
 class OrderItemCreateSerializer(Serializer):
@@ -34,8 +36,10 @@ class OrderCreateSerializer(Serializer):
         products_dict = {p.id: p for p in products}
 
         order_items = []
-
         total = Decimal('0')
+
+        text_items = ""
+
         for item in items_data:
             product = products_dict.get(item['product_id'])
 
@@ -47,6 +51,8 @@ class OrderCreateSerializer(Serializer):
             item_total = product.price * item['quantity']
             total += item_total
 
+            text_items += f"\n📦 {product.name} x {item['quantity']} = {item_total}"
+
             order_items.append(
                 OrderItem(
                     order=order,
@@ -55,8 +61,35 @@ class OrderCreateSerializer(Serializer):
                     price=product.price
                 )
             )
+
         order.total_price = total
         order.save()
 
         OrderItem.objects.bulk_create(order_items)
+
+        text = f"""
+    <b>🛒 Yangi buyurtma</b>
+
+    <b>👤 Ism:</b> {order.full_name}
+    <b>📞 Telefon:</b> {order.phone}
+
+    <b>📦 Mahsulotlar:</b>
+    {text_items}
+
+    <b>💰 Jami:</b> {order.total_price}
+
+    <b>💬 Izoh:</b> {order.message or '-'}
+    """
+
+        url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+
+        try:
+            requests.post(url, json={
+                "chat_id": settings.TELEGRAM_CHAT_ID,
+                "text": text,
+                "parse_mode": "HTML"
+            })
+        except Exception as e:
+            print("Telegram error:", e)
+
         return order

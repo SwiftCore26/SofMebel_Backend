@@ -1,5 +1,5 @@
-from rest_framework.fields import SerializerMethodField
-from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import SerializerMethodField, CharField, EmailField
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from apps.models import Product, Category
 
@@ -27,3 +27,11 @@ class CategoryModelSerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class ContactSerializer(Serializer):
+    name = CharField()
+    surname = CharField()
+    email = EmailField()
+    phone = CharField()
+    message = CharField()
