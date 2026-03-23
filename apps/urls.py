@@ -1,8 +1,7 @@
 from django.urls import path
 
 from apps.views import CreateOrderAPIView, ProductListAPIView, CategoryDetailAPIView, ProductDetailAPIView, \
-    CategoryListAPIView
-from apps.views.product import ContactView
+    CategoryListAPIView, ContactView
 
 urlpatterns = [
     path('products/', ProductListAPIView.as_view(), name='product-list'),
