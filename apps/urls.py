@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 
 from apps.views import CreateOrderAPIView, ProductListAPIView, CategoryDetailAPIView, ProductDetailAPIView, \
     CategoryListAPIView, ContactView
@@ -9,5 +10,4 @@ urlpatterns = [
     path('categories/', CategoryListAPIView.as_view(), name='category-list'),
     path('category/<slug:slug>/', CategoryDetailAPIView.as_view(), name='category-detail'),
     path('orders/create/', CreateOrderAPIView.as_view(), name='order-create'),
-    path("contact/", ContactView.as_view()),
-]
+    path("contact/", csrf_exempt(ContactView.as_view()), name="contact"),]

@@ -1,19 +1,23 @@
 import requests
 from drf_spectacular.utils import extend_schema
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from apps.serializers import ContactSerializer
-from root import settings
+from apps.models import TelegramGroup
+
+from rest_framework.permissions import AllowAny
 
 
 class ContactView(APIView):
+    authentication_classes = []
+    permission_classes = (AllowAny,)
+
     @extend_schema(
         request=ContactSerializer,
         responses={201: None}
     )
     def post(self, request):
         serializer = ContactSerializer(data=request.data)
-
         if serializer.is_valid():
             data = serializer.validated_data
 
@@ -28,13 +32,16 @@ class ContactView(APIView):
 {data['message']}
 """
 
-            url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+            groups = TelegramGroup.objects.all()
+            for group in groups:
+                url = f"https://api.telegram.org/bot{group.bot_token}/sendMessage"
+                payload = {"chat_id": group.group_id, "text": text}
+                try:
+                    response = requests.post(url, json=payload)
+                    response.raise_for_status()
+                except Exception as e:
+                    print(f"Error sending message to {group.group_name}: {e}")
 
-            requests.post(url, json={
-                "chat_id": settings.TELEGRAM_CHAT_ID,
-                "text": text
-            })
-
-            return Response({"status": "sent"}, status=200)
+            return Response({"status": "sent"}, status=201)
 
         return Response(serializer.errors, status=400)

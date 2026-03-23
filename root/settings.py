@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from root.drf_settings import *
+from root.jazzmin_settings import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv('.env')
