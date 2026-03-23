@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from apps.filters import ProductFilter
 from apps.models import Product, Category
 from apps.pagination import CustomPagination
-from apps.serializers.product import ProductModelSerializer, CategoryDetailSerializer, CategoryModelSerializer
+from apps.serializers import ProductModelSerializer, CategoryDetailSerializer, CategoryModelSerializer
 
 
 @extend_schema(
