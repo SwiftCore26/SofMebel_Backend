@@ -8,6 +8,14 @@ Order Model -> Full(Cart, Order, Cart Item)
 unfold.admin mana shuni korish kerak jazzmin orniga :(
 
 
+user yaratishda
+
+Manager
+SuperAdmind
+Client bolishi kere
+
+kein kecha login qilish qism va order ga status la qosh
+
 
 TODO Done
 base model qlish kere bita ✅

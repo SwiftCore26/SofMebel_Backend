@@ -73,6 +73,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'apps.User'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -104,6 +106,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
-
-TELEGRAM_BOT_TOKEN = "6344567125:AAHbrMvwsKtFpHZEhTxt-7WNJ89DxoalqKQ"
-TELEGRAM_CHAT_ID = "-1002025286923"
