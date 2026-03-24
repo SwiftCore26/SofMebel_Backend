@@ -1,14 +1,21 @@
-from django.db.models import Model, ForeignKey, CASCADE
+from django.db.models import Model, ForeignKey, CASCADE, TextChoices
 from django.db.models.fields import IntegerField, CharField, TextField, DecimalField
 
 from apps.models.base import TimeBaseModel
 
 
 class Order(TimeBaseModel):
+    class Status(TextChoices):
+        PENDING = 'pending', 'Pending'
+        ACTIVE = 'active', 'Active'
+        REJECTED = 'rejected', 'Rejected'
+        CANT_PHONE = "cant_phone", 'Cant_phone'
+        FINISHED = 'finished', 'Finished'
+
     full_name = CharField(max_length=255)
     phone = CharField(max_length=20)
     message = TextField(blank=True)
-    status = CharField(max_length=20, default='pending')
+    status = CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     total_price = DecimalField(max_digits=12, decimal_places=2, default=0)
 
     def __str__(self):
