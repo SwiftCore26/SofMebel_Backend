@@ -17,7 +17,6 @@ class TelegramGroup(Model):
         return f"Telegram group {self.group_id}"
 
 
-
 class Contact(Model):
     name = CharField(max_length=100)
     surname = CharField(max_length=100)
