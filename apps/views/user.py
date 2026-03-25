@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.serializers import ManagerCreateSerializer, LoginSerializer
-from apps.permissions import IsAdmin
+from apps.serializers import ManagerCreateSerializer, LoginSerializer, UserCreateByManagerSerializer
+from apps.permissions import IsAdmin, IsManager
 
 
 @extend_schema(
@@ -23,6 +23,7 @@ class ManagerCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @extend_schema(
     tags=['Login API'],
@@ -44,3 +45,19 @@ class LoginView(APIView):
             })
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@extend_schema(
+    tags=['Manager User Create'],
+    request=UserCreateByManagerSerializer,
+)
+class UserCreateByManagerView(APIView):
+    permission_classes = (IsManager,)
+
+    def post(self, request):
+        serializer = UserCreateByManagerSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+
+        return Response(serializer.errors, status=400)

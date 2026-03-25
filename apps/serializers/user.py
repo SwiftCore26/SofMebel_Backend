@@ -8,7 +8,7 @@ class ManagerCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'phone', 'full_name', 'password']
+        fields = ('id', 'phone', 'full_name', 'password')
 
     def validate_phone(self, value):
         if User.objects.filter(phone=value).exists():
@@ -22,6 +22,31 @@ class ManagerCreateSerializer(serializers.ModelSerializer):
             **validated_data,
             role='manager',
             is_staff=True
+        )
+        user.set_password(password)
+        user.save()
+
+        return user
+
+
+class UserCreateByManagerSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=6)
+
+    class Meta:
+        model = User
+        fields = ('id', 'phone', 'full_name', 'password', 'role')
+
+    def validate_role(self, value):
+        if value not in ['master']:
+            raise serializers.ValidationError("Manager faqat master yaratishi mumkin")
+        return value
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+
+        user = User(
+            **validated_data,
+            is_staff=False
         )
         user.set_password(password)
         user.save()
