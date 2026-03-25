@@ -1,3 +1,4 @@
-from apps.views.order import CreateOrderAPIView
-from apps.views.common import ContactView
-from apps.views.product import CategoryListAPIView, ProductListAPIView, CategoryDetailAPIView, ProductDetailAPIView
+from apps.views.order import *
+from apps.views.common import *
+from apps.views.product import *
+from apps.views.user import *

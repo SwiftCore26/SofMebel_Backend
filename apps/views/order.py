@@ -7,14 +7,15 @@ from rest_framework.permissions import AllowAny
 from apps.serializers import OrderCreateSerializer
 
 
+@extend_schema(
+    tags=['Order'],
+    request=OrderCreateSerializer,
+    responses={201: None}
+)
 class CreateOrderAPIView(APIView):
     authentication_classes = []
     permission_classes = (AllowAny,)
 
-    @extend_schema(
-        request=OrderCreateSerializer,
-        responses={201: None}
-    )
     def post(self, request):
         serializer = OrderCreateSerializer(data=request.data)
 

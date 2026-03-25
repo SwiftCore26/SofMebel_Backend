@@ -15,7 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             ('manager', 'Manager'),
             ('master', 'Master'),
         ),
-        default='manager'
+        default='admin'
     )
 
     is_active = models.BooleanField(default=True)

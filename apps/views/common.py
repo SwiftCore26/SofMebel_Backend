@@ -8,14 +8,15 @@ from apps.models import TelegramGroup
 from rest_framework.permissions import AllowAny
 
 
+@extend_schema(
+    tags=['Contact'],
+    request=ContactSerializer,
+    responses={201: None}
+)
 class ContactView(APIView):
     authentication_classes = []
     permission_classes = (AllowAny,)
 
-    @extend_schema(
-        request=ContactSerializer,
-        responses={201: None}
-    )
     def post(self, request):
         serializer = ContactSerializer(data=request.data)
         if serializer.is_valid():
