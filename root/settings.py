@@ -61,6 +61,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'root.wsgi.application'
+AUTH_USER_MODEL = 'apps.User'
 
 DATABASES = {
     'default': {
@@ -73,7 +74,6 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'apps.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

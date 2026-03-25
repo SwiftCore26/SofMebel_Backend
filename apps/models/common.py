@@ -1,10 +1,4 @@
-from django.contrib.auth.models import AbstractUser
 from django.db.models import Model, CharField, TextField, EmailField, DateTimeField
-from django.db.models.fields import BooleanField
-
-
-class User(AbstractUser):
-    is_worker = BooleanField(default=False)
 
 
 class Footer(Model):

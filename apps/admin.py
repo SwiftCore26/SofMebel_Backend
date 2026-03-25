@@ -52,19 +52,6 @@ class FooterAdmin(ModelAdmin):
 
 
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
-    list_display = 'id', 'username', 'email', 'is_staff', 'is_active', 'is_worker'
-    list_filter = 'is_staff', 'is_active', 'is_worker'
-    fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_worker', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'is_staff', 'is_active', 'is_worker'),
-        }),
-    )
-    search_fields = 'username', 'email'
-    ordering = ('id',)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'phone', 'full_name', 'role', 'is_staff')
+    search_fields = ('phone', 'full_name')
