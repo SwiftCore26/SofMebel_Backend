@@ -7,17 +7,17 @@ JAZZMIN_UI_TWEAKS = {
 
 JAZZMIN_SETTINGS = {
     # --- Asosiy ma’lumotlar ---
-    "site_title": "XPress Admin",
-    "site_header": "XPress Management",
-    "site_brand": "XPress",
+    "site_title": "Sof Mebel Admin",
+    "site_header": "Sof Mebel Management",
+    "site_brand": "Sof Mebel",
     "site_logo": "books/img/logo_xpress.png",
     "login_logo": "books/img/logo_xpress.png",
     "login_logo_dark": "books/img/logo_xpress.png",
     "site_logo_classes": "img-circle shadow-sm",
     "site_icon": "books/img/logo_xpress.png",
-    "welcome_sign": "Welcome to XPress Dashboard",
-    "copyright": "© 2025 XPress Transportation. All rights reserved.",
-    "index_title": "XPress boshqaruv paneli",
+    "welcome_sign": "Welcome to Sof Mebel Dashboard",
+    "copyright": "© 2012 Sof Mebel Company",
+    "index_title": "Sof Mebel boshqaruv paneli",
     # --- Qidiruv ---
     "search_model": ["auth.User", "auth.Group"],
 
@@ -26,7 +26,7 @@ JAZZMIN_SETTINGS = {
 
     # --- Yuqori menyu (header bar) ---
     "topmenu_links": [
-        {"name": "Xpress", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Sof Mebel", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"name": "Saytga o‘tish", "url": "/", "new_window": True},
         {"model": "auth.User"},
         {"app": "books"},
