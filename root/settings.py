@@ -5,8 +5,9 @@ from dotenv import load_dotenv
 from root.drf_settings import *
 from root.jazzmin_settings import *
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv('.env')
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
