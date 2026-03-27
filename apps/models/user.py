@@ -1,27 +1,29 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+from django.db.models.fields import CharField, BooleanField, DateTimeField
 
 from apps.models import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    phone = models.CharField(max_length=20, unique=True)
-    full_name = models.CharField(max_length=255, blank=True)
+    class Role(models.TextChoices):
+        ADMIN = 'admin', 'Admin'
+        MANAGER = 'manager', 'Manager'
+        MASTER = 'master', 'Master'
 
-    role = models.CharField(
+    phone = CharField(max_length=20, unique=True)
+    full_name = CharField(max_length=255, blank=True)
+
+    role = CharField(
         max_length=20,
-        choices=(
-            ('admin', 'Admin'),
-            ('manager', 'Manager'),
-            ('master', 'Master'),
-        ),
-        default='admin'
+        choices=Role.choices,
+        default=Role.ADMIN
     )
 
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)  # admin panel access
+    is_active = BooleanField(default=True)
+    is_staff = BooleanField(default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = DateTimeField(auto_now_add=True)
 
     objects = UserManager()
 
