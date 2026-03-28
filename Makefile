@@ -4,3 +4,8 @@ mig:
 
 user:
 	python3 manage.py createsuperuser
+
+
+
+lib:
+	pip freeze > requirements.txt
