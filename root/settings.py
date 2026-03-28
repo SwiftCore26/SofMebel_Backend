@@ -15,6 +15,31 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
+
+CORS_ALLOWED_ORIGINS = [
+    "https://sof-mebel.netlify.app",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "http://localhost:3003",
+
+]
+
+CORS_ALLOW_HEADERS = [
+    "*",
+    "content-type",
+    "authorization",
+    "x-requested-with",
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -31,6 +56,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'django_filters',
+    "corsheaders",
+
 ]
 
 MIDDLEWARE = [
