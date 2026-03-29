@@ -1,11 +1,12 @@
 from decimal import Decimal
-import requests
+
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import IntegerField, CharField
 from rest_framework.serializers import Serializer
 
-from apps.models import Product, TelegramGroup
+from apps.models import Product
 from apps.models.order import Order, OrderItem
+from apps.utils import send_telegram_message
 
 
 class OrderItemCreateSerializer(Serializer):
@@ -21,7 +22,7 @@ class OrderCreateSerializer(Serializer):
 
     def validate_items(self, value):
         if not value:
-            raise ValidationError("Items bo‘sh bo‘lmasligi kerak")
+            raise ValidationError("Items bo'sh bo'lmasligi kerak")
         return value
 
     def create(self, validated_data):
@@ -44,12 +45,11 @@ class OrderCreateSerializer(Serializer):
             price = product.price or Decimal('0')
             quantity = item.get('quantity', 0)
             if quantity is None or not isinstance(quantity, int):
-                raise ValidationError(f"Product {product.name} uchun quantity noto‘g‘ri")
+                raise ValidationError(f"Product {product.name} uchun quantity noto'g'ri")
 
             item_total = price * quantity
             total += item_total
-
-            text_items += f"\n📦 {product.name} x {quantity} = {item_total}"
+            text_items += f"\n📦 {product.name} x {quantity} = {item_total:,} so'm"
 
             order_items.append(
                 OrderItem(
@@ -60,39 +60,18 @@ class OrderCreateSerializer(Serializer):
                 )
             )
 
-        # Order totalni saqlash
         order.total_price = total
         order.save()
         OrderItem.objects.bulk_create(order_items)
 
-        # Telegram uchun xabar tayyorlash
-        text = f"""
-<b>🛒 Yangi buyurtma</b>
-
-<b>👤 Ism:</b> {order.full_name}
-<b>📞 Telefon:</b> +{order.phone}
-
-<b>📦 Mahsulotlar:</b>
-{text_items}
-
-<b>💰 Jami:</b> {order.total_price}
-
-<b>💬 Izoh:</b> {order.message or '-'}
-"""
-
-        # Telegram xabarini barcha guruhlarga yuborish
-        groups = TelegramGroup.objects.all()
-        for group in groups:
-            url = f"https://api.telegram.org/bot{group.bot_token}/sendMessage"
-            payload = {
-                "chat_id": group.group_id,
-                "text": text,
-                "parse_mode": "HTML"
-            }
-            try:
-                response = requests.post(url, json=payload)
-                response.raise_for_status()
-            except Exception as e:
-                print(f"Telegram error for group {group.group_name}: {e}")
+        text = (
+            f"🛒 <b>Yangi buyurtma #{order.id}</b>\n\n"
+            f"👤 <b>Ism:</b> {order.full_name}\n"
+            f"📞 <b>Telefon:</b> +{order.phone}\n\n"
+            f"📦 <b>Mahsulotlar:</b>{text_items}\n\n"
+            f"💰 <b>Jami:</b> {order.total_price:,} so'm\n"
+            f"💬 <b>Izoh:</b> {order.message or '-'}"
+        )
+        send_telegram_message(text)
 
         return order

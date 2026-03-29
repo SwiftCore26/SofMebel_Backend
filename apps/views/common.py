@@ -1,11 +1,12 @@
 import requests
 from drf_spectacular.utils import extend_schema
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from apps.serializers import ContactSerializer
-from apps.models import TelegramGroup
-
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from apps.models import Contact
+from apps.serializers import ContactSerializer
+from apps.utils import send_telegram_message
 
 
 @extend_schema(
@@ -20,28 +21,16 @@ class ContactView(APIView):
     def post(self, request):
         serializer = ContactSerializer(data=request.data)
         if serializer.is_valid():
-            data = serializer.validated_data
+            contact = serializer.save()  # ✅ DB ga saqlanadi
 
-            text = f"""
-📝 Yangi xabar:
-
-👤 Ism: {data['name']} {data['surname']}
-📧 Email: {data['email']}
-📞 Telefon: {data['phone']}
-
-💬 Xabar:
-{data['message']}
-"""
-
-            groups = TelegramGroup.objects.all()
-            for group in groups:
-                url = f"https://api.telegram.org/bot{group.bot_token}/sendMessage"
-                payload = {"chat_id": group.group_id, "text": text}
-                try:
-                    response = requests.post(url, json=payload)
-                    response.raise_for_status()
-                except Exception as e:
-                    print(f"Error sending message to {group.group_name}: {e}")
+            text = (
+                f"📝 <b>Yangi murojaat</b>\n\n"
+                f"👤 <b>Ism:</b> {contact.name} {contact.surname}\n"
+                f"📧 <b>Email:</b> {contact.email}\n"
+                f"📞 <b>Telefon:</b> {contact.phone}\n\n"
+                f"💬 <b>Xabar:</b>\n{contact.message}"
+            )
+            send_telegram_message(text)  # ✅ utils orqali, parse_mode=HTML
 
             return Response({"status": "sent"}, status=201)
 
