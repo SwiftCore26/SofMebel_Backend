@@ -1,4 +1,4 @@
-from django.db.models import Model, CharField, ForeignKey, CASCADE, TextField, DecimalField, ImageField
+from django.db.models import Model, CharField, ForeignKey, CASCADE, TextField, DecimalField, ImageField, BooleanField
 from django.db.models.fields import FloatField
 
 from apps.models.base import SlugBaseModel
@@ -7,6 +7,7 @@ from apps.models.base import SlugBaseModel
 class Category(SlugBaseModel):
     name = CharField(max_length=255)
     image = ImageField(upload_to='categories/')
+    main_true = BooleanField(default=False)
 
     def __str__(self):
         return f'{self.name}'
