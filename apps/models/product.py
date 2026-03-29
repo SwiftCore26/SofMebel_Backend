@@ -15,7 +15,7 @@ class Category(SlugBaseModel):
 class Product(SlugBaseModel):
     name = CharField(max_length=255)
     description = TextField()
-    price = DecimalField(max_digits=10, decimal_places=2)
+    price = DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     category = ForeignKey('apps.Category', CASCADE, related_name='products')
     rating = FloatField(default=0)
 
