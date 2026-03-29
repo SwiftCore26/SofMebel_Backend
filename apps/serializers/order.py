@@ -26,11 +26,8 @@ class OrderCreateSerializer(Serializer):
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
-
-        # Order yaratish
         order = Order.objects.create(**validated_data)
 
-        # Mahsulotlarni olish
         product_ids = [item['product_id'] for item in items_data]
         products = Product.objects.filter(id__in=product_ids)
         products_dict = {p.id: p for p in products}
@@ -44,17 +41,12 @@ class OrderCreateSerializer(Serializer):
             if not product:
                 raise ValidationError(f"Product {item['product_id']} topilmadi")
 
-            # PRICE CHECK
-            if product.price is None:
-                raise ValidationError(f"Product {product.name} narxi mavjud emas")
-
-            # QUANTITY CHECK
+            price = product.price or Decimal('0')
             quantity = item.get('quantity', 0)
             if quantity is None or not isinstance(quantity, int):
                 raise ValidationError(f"Product {product.name} uchun quantity noto‘g‘ri")
 
-            # ITEM TOTAL
-            item_total = product.price * quantity
+            item_total = price * quantity
             total += item_total
 
             text_items += f"\n📦 {product.name} x {quantity} = {item_total}"
@@ -64,7 +56,7 @@ class OrderCreateSerializer(Serializer):
                     order=order,
                     product=product,
                     quantity=quantity,
-                    price=product.price
+                    price=price
                 )
             )
 
