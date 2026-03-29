@@ -52,7 +52,7 @@ class FooterAdmin(ModelAdmin):
 
 
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(ModelAdmin):
     list_display = 'id', 'phone', 'full_name', 'role', 'is_staff'
     list_filter = 'is_staff', 'is_active', 'role'
 
