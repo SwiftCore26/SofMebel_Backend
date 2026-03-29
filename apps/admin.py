@@ -24,11 +24,26 @@ class ProductAdmin(ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    list_display = 'id', 'name', 'slug'
+    list_display = 'id', 'name', 'slug', 'main_true'
     search_fields = ('name',)
     ordering = ('id',)
     readonly_fields = 'id', 'slug'
     list_display_links = 'id', 'name'
+
+    def save_model(self, request, obj, form, change):
+        if obj.main_true:
+            qs = Category.objects.filter(main_true=True)
+            if change:
+                qs = qs.exclude(pk=obj.pk)
+            if qs.count() >= 8:
+                from django.contrib import messages
+                self.message_user(
+                    request,
+                    "❌ Maksimal 8 ta kategoriya main_true bo'lishi mumkin! Avval birini o'chiring.",
+                    level=messages.ERROR,
+                )
+                return
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(Contact)
