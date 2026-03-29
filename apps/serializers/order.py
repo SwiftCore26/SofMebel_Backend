@@ -68,7 +68,7 @@ class OrderCreateSerializer(Serializer):
 <b>🛒 Yangi buyurtma</b>
 
 <b>👤 Ism:</b> {order.full_name}
-<b>📞 Telefon:</b> {order.phone}
+<b>📞 Telefon:</b> +{order.phone}
 
 <b>📦 Mahsulotlar:</b>
 {text_items}
