@@ -44,16 +44,26 @@ class OrderCreateSerializer(Serializer):
             if not product:
                 raise ValidationError(f"Product {item['product_id']} topilmadi")
 
-            item_total = product.price * item['quantity']
+            # PRICE CHECK
+            if product.price is None:
+                raise ValidationError(f"Product {product.name} narxi mavjud emas")
+
+            # QUANTITY CHECK
+            quantity = item.get('quantity', 0)
+            if quantity is None or not isinstance(quantity, int):
+                raise ValidationError(f"Product {product.name} uchun quantity noto‘g‘ri")
+
+            # ITEM TOTAL
+            item_total = product.price * quantity
             total += item_total
 
-            text_items += f"\n📦 {product.name} x {item['quantity']} = {item_total}"
+            text_items += f"\n📦 {product.name} x {quantity} = {item_total}"
 
             order_items.append(
                 OrderItem(
                     order=order,
                     product=product,
-                    quantity=item['quantity'],
+                    quantity=quantity,
                     price=product.price
                 )
             )
