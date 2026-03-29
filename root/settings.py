@@ -20,6 +20,7 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = [
     "https://sof-mebel.netlify.app",
+    "http://localhost:3000",
     "http://localhost:3001",
     "http://localhost:3002",
     "http://localhost:3003",
