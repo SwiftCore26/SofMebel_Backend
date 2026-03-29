@@ -5,8 +5,8 @@ from apps.models.base import SlugBaseModel
 
 
 class Category(SlugBaseModel):
-    name = CharField(max_length=255)
-    image = ImageField(upload_to='categories/')
+    name      = CharField(max_length=255)
+    image     = ImageField(upload_to='categories/', null=True, blank=True)
     main_true = BooleanField(default=False)
 
     def __str__(self):

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import TabularInline, ModelAdmin
 
 from apps.models import ProductImage, Product, Category, Contact, TelegramGroup, Footer, User
+from apps.models.order import Order, OrderItem
 
 
 class ProductImageInline(TabularInline):
@@ -83,3 +84,56 @@ class UserAdmin(ModelAdmin):
     )
     search_fields = 'phone', 'full_name'
     ordering = ('id',)
+
+
+class OrderItemInline(TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = 'product', 'quantity', 'price'
+    can_delete = False
+
+
+@admin.register(Order)
+class OrderAdmin(ModelAdmin):
+    list_display = (
+        'id', 'full_name', 'phone', 'status', 'total_price',
+        'is_called', 'handler_display', 'created_at',
+    )
+    list_filter  = 'status', 'is_called'
+    search_fields = 'full_name', 'phone'
+    ordering     = ('-created_at',)
+    inlines      = (OrderItemInline,)
+
+    readonly_fields = (
+        'id', 'created_at', 'updated_at',
+        'handler_telegram_id', 'handler_first_name', 'handler_last_name',
+        'handler_username', 'handled_at', 'called_at',
+    )
+
+    fieldsets = (
+        ('Buyurtma', {
+            'fields': ('id', 'full_name', 'phone', 'message', 'status', 'total_price'),
+        }),
+        ('Vaqt', {
+            'fields': ('created_at', 'updated_at'),
+        }),
+        ('Kim qabul/rad qildi', {
+            'fields': (
+                'handler_telegram_id', 'handler_first_name',
+                'handler_last_name', 'handler_username', 'handled_at',
+            ),
+        }),
+        ("Qo'ng'iroq", {
+            'fields': ('is_called', 'called_at'),
+        }),
+    )
+
+    @admin.display(description="Kim qabul qildi")
+    def handler_display(self, obj):
+        if not obj.handler_telegram_id:
+            return "—"
+        name = f"{obj.handler_first_name} {obj.handler_last_name}".strip()
+        if obj.handler_username:
+            return f"{name} (@{obj.handler_username})"
+        return name or str(obj.handler_telegram_id)
+

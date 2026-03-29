@@ -13,6 +13,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG')
 
+BASE_URL = os.getenv('BASE_URL', '').rstrip('/')
+
 ALLOWED_HOSTS = ['*']
 
 

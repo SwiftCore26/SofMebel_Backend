@@ -6,7 +6,8 @@ from rest_framework.serializers import Serializer
 
 from apps.models import Product
 from apps.models.order import Order, OrderItem
-from apps.utils import send_telegram_message
+from apps.utils import send_telegram_message, build_order_keyboard
+
 
 
 class OrderItemCreateSerializer(Serializer):
@@ -72,6 +73,6 @@ class OrderCreateSerializer(Serializer):
             f"💰 <b>Jami:</b> {order.total_price:,} so'm\n"
             f"💬 <b>Izoh:</b> {order.message or '-'}"
         )
-        send_telegram_message(text)
+        send_telegram_message(text, reply_markup=build_order_keyboard(order.id))
 
         return order

@@ -1,8 +1,12 @@
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.views import CreateOrderAPIView, ProductListAPIView, CategoryDetailAPIView, ProductDetailAPIView, \
-    CategoryListAPIView, ContactView, ManagerCreateView, LoginView, UserCreateByManagerView
+from apps.views import (
+    CreateOrderAPIView, ProductListAPIView, CategoryDetailAPIView,
+    ProductDetailAPIView, CategoryListAPIView, ContactView,
+    ManagerCreateView, LoginView, UserCreateByManagerView,
+    TelegramWebhookView,
+)
 
 urlpatterns = [
     # todo Auth
@@ -21,5 +25,8 @@ urlpatterns = [
     path('product/<slug:slug>/', ProductDetailAPIView.as_view(), name='product-detail'),
     path('categories/', CategoryListAPIView.as_view(), name='category-list'),
     path('category/<slug:slug>/', CategoryDetailAPIView.as_view(), name='category-detail'),
+
+    # todo Telegram Webhook
+    path('telegram/webhook/<str:bot_token>/', TelegramWebhookView.as_view(), name='telegram-webhook'),
 
 ]

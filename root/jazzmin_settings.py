@@ -1,88 +1,80 @@
 JAZZMIN_UI_TWEAKS = {
-    # "theme": "darkly",
-    # "theme": "slate",
-    # "theme": "flatly",
-
+    "theme": "flatly",
 }
 
 JAZZMIN_SETTINGS = {
-    # --- Asosiy ma’lumotlar ---
+    # --- Asosiy ma'lumotlar ---
     "site_title": "Sof Mebel Admin",
     "site_header": "Sof Mebel Management",
     "site_brand": "Sof Mebel",
-    "site_logo": "books/img/logo_xpress.png",
-    "login_logo": "books/img/logo_xpress.png",
-    "login_logo_dark": "books/img/logo_xpress.png",
+    "site_logo": None,           # logo rasm bo'lsa: "img/logo.png"
+    "login_logo": None,
+    "login_logo_dark": None,
     "site_logo_classes": "img-circle shadow-sm",
-    "site_icon": "books/img/logo_xpress.png",
-    "welcome_sign": "Welcome to Sof Mebel Dashboard",
-    "copyright": "© 2012 Sof Mebel Company",
+    "site_icon": None,
+    "welcome_sign": "Sof Mebel boshqaruv paneliga xush kelibsiz!",
+    "copyright": "© 2026 Sof Mebel",
     "index_title": "Sof Mebel boshqaruv paneli",
-    # --- Qidiruv ---
-    "search_model": ["auth.User", "auth.Group"],
 
-    # --- User avatar (yo‘q bo‘lsa None) ---
+    # --- Qidiruv ---
+    "search_model": ["apps.User"],
+
+    # --- User avatar ---
     "user_avatar": None,
 
-    # --- Yuqori menyu (header bar) ---
+    # --- Yuqori menyu ---
     "topmenu_links": [
-        {"name": "Sof Mebel", "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"name": "Saytga o‘tish", "url": "/", "new_window": True},
-        {"model": "auth.User"},
-        {"app": "books"},
-        {"name": "Documentation", "url": "https://docs.djangoproject.com/", "new_window": True},
-        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Bosh sahifa", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Saytga o'tish", "url": "/", "new_window": True},
     ],
 
     # --- User menyusi ---
     "usermenu_links": [
-        {"model": "auth.user"},
-        {"name": "GitHub Issues", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Profil", "url": "admin:apps_user_change", "permissions": ["auth.view_user"]},
     ],
 
-    # --- Sidebar menyu sozlamalari ---
+    # --- Sidebar ---
     "show_sidebar": True,
     "navigation_expanded": True,
-    "hide_apps": ["sessions"],  # keraksiz app’lar yashiriladi
-    "hide_models": ["auth.Group"],  # misol uchun Group model yashirish
-    "order_with_respect_to": ["books", "auth", "users"],
+    "hide_apps": ["auth", "sessions"],
+    "hide_models": [],
+    "order_with_respect_to": [
+        "apps.User",
+        "apps.Order",
+        "apps.Product",
+        "apps.Category",
+        "apps.TelegramGroup",
+        "apps.Contact",
+        "apps.Footer",
+    ],
 
-    "custom_links": {
-        "books": [{
-            "name": "Send Notifications",
-            "url": "make_messages",
-            "icon": "fas fa-paper-plane",
-            "permissions": ["books.view_book"],
-        }]
-    },
+    "custom_links": {},
 
     # --- Ikonalar ---
     "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "books": "fas fa-book",
-        "books.book": "fas fa-book-open",
-        "books.author": "fas fa-pen-fancy",
+        "apps":                  "fas fa-layer-group",
+        "apps.User":             "fas fa-user",
+        "apps.Order":            "fas fa-shopping-cart",
+        "apps.OrderItem":        "fas fa-list",
+        "apps.Product":          "fas fa-couch",
+        "apps.Category":         "fas fa-tags",
+        "apps.TelegramGroup":    "fab fa-telegram",
+        "apps.Contact":          "fas fa-envelope",
+        "apps.Footer":           "fas fa-link",
     },
-    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_parents":  "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-dot-circle",
 
-    # --- Modal o‘rniga popup ishlatish ---
+    # --- Modal ---
     "related_modal_active": True,
 
-    # --- UI Tweaks ---
-    "custom_css": "books/css/custom_admin.css",
+    # --- UI ---
+    "custom_css": None,
     "custom_js": None,
     "use_google_fonts_cdn": True,
     "show_ui_builder": False,
 
     # --- Forma tartibi ---
     "changeform_format": "horizontal_tabs",
-    "changeform_format_overrides": {
-        "auth.user": "collapsible",
-        "auth.group": "vertical_tabs",
-    },
-
-    # --- Qo‘shimcha (optional) ---
-    "theme": "flatly",  # Jazzmin 3+ versiyalarida theme ishlaydi (bootstrap theme)
+    "changeform_format_overrides": {},
 }

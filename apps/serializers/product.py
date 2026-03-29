@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
@@ -11,6 +12,7 @@ class ProductModelSerializer(ModelSerializer):
         model = Product
         fields = '__all__'
 
+    @extend_schema_field(list)
     def get_images(self, obj):
         request = self.context.get('request')
         return [
@@ -27,6 +29,7 @@ class CategoryDetailSerializer(ModelSerializer):
         model = Category
         fields = ['id', 'name', 'slug', 'image', 'products']
 
+    @extend_schema_field(str)
     def get_image(self, obj):
         request = self.context.get('request')
         if obj.image and request:
