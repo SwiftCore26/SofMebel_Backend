@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.admin import TabularInline, ModelAdmin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from apps.models import ProductImage, Product, Category, Contact, TelegramGroup, Footer, User
 
