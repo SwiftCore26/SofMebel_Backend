@@ -68,13 +68,15 @@ class OrderCreateSerializer(Serializer):
         OrderItem.objects.bulk_create(order_items)
 
         safe_full_name = escape_telegram_html(order.full_name)
-        safe_phone = escape_telegram_html(order.phone)
+        phone_value = (str(order.phone or "").strip()).lstrip("+")
+        phone_for_message = f"+{phone_value}" if phone_value else "-"
+        safe_phone = escape_telegram_html(phone_for_message)
         safe_message = escape_telegram_html(order.message or "-")
 
         text = (
             f"🛒 <b>Yangi buyurtma #{order.id}</b>\n\n"
             f"👤 <b>Ism:</b> {safe_full_name}\n"
-            f"📞 <b>Telefon:</b> +{safe_phone}\n\n"
+            f"📞 <b>Telefon:</b> {safe_phone}\n\n"
             f"📦 <b>Mahsulotlar:</b>{text_items}\n\n"
             f"💰 <b>Jami:</b> {order.total_price:,} so'm\n"
             f"💬 <b>Izoh:</b> {safe_message}"
