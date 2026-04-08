@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from apps.models.order import Order
+from apps.utils import escape_telegram_html
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,8 @@ class TelegramWebhookView(View):
         last_name    = tg_user.get("last_name", "")
         username     = tg_user.get("username", "")
         display_name = f"{first_name} {last_name}".strip() or username or "Noma'lum"
+        safe_display_name = escape_telegram_html(display_name)
+        safe_username = escape_telegram_html(username)
 
         now = datetime.now(tz=timezone.utc)
 
@@ -89,8 +92,8 @@ class TelegramWebhookView(View):
 
             new_text = (
                 f"{original_text}\n\n━━━━━━━━━━━━━━\n"
-                f"✅ <b>Qabul qildi:</b> {display_name}"
-                + (f" (@{username})" if username else "")
+                f"✅ <b>Qabul qildi:</b> {safe_display_name}"
+                + (f" (@{safe_username})" if username else "")
             )
             keyboard = self._called_keyboard(order_id)
             self._edit_message(bot_token, chat_id, message_id, new_text, keyboard)
@@ -113,8 +116,8 @@ class TelegramWebhookView(View):
 
             new_text = (
                 f"{original_text}\n\n━━━━━━━━━━━━━━\n"
-                f"❌ <b>Bekor qildi:</b> {display_name}"
-                + (f" (@{username})" if username else "")
+                f"❌ <b>Bekor qildi:</b> {safe_display_name}"
+                + (f" (@{safe_username})" if username else "")
             )
             self._edit_message(bot_token, chat_id, message_id, new_text, keyboard=None)
             self._answer_callback(bot_token, callback_id, "❌ Buyurtma bekor qilindi!", show_alert=True)
@@ -130,8 +133,8 @@ class TelegramWebhookView(View):
 
             new_text = (
                 f"{original_text}\n"
-                f"📞 <b>Qo'ng'iroq qildi:</b> {display_name}"
-                + (f" (@{username})" if username else "")
+                f"📞 <b>Qo'ng'iroq qildi:</b> {safe_display_name}"
+                + (f" (@{safe_username})" if username else "")
             )
             self._edit_message(bot_token, chat_id, message_id, new_text, keyboard=None)
             self._answer_callback(bot_token, callback_id, "📞 Qo'ng'iroq belgilandi!", show_alert=True)

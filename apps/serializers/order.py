@@ -6,7 +6,7 @@ from rest_framework.serializers import Serializer
 
 from apps.models import Product
 from apps.models.order import Order, OrderItem
-from apps.utils import send_telegram_message, build_order_keyboard
+from apps.utils import send_telegram_message, build_order_keyboard, escape_telegram_html
 
 
 
@@ -50,7 +50,9 @@ class OrderCreateSerializer(Serializer):
 
             item_total = price * quantity
             total += item_total
-            text_items += f"\n📦 {product.name} x {quantity} = {item_total:,} so'm"
+            text_items += (
+                f"\n📦 {escape_telegram_html(product.name)} x {quantity} = {item_total:,} so'm"
+            )
 
             order_items.append(
                 OrderItem(
@@ -65,13 +67,17 @@ class OrderCreateSerializer(Serializer):
         order.save()
         OrderItem.objects.bulk_create(order_items)
 
+        safe_full_name = escape_telegram_html(order.full_name)
+        safe_phone = escape_telegram_html(order.phone)
+        safe_message = escape_telegram_html(order.message or "-")
+
         text = (
             f"🛒 <b>Yangi buyurtma #{order.id}</b>\n\n"
-            f"👤 <b>Ism:</b> {order.full_name}\n"
-            f"📞 <b>Telefon:</b> +{order.phone}\n\n"
+            f"👤 <b>Ism:</b> {safe_full_name}\n"
+            f"📞 <b>Telefon:</b> +{safe_phone}\n\n"
             f"📦 <b>Mahsulotlar:</b>{text_items}\n\n"
             f"💰 <b>Jami:</b> {order.total_price:,} so'm\n"
-            f"💬 <b>Izoh:</b> {order.message or '-'}"
+            f"💬 <b>Izoh:</b> {safe_message}"
         )
         send_telegram_message(text, reply_markup=build_order_keyboard(order.id))
 
